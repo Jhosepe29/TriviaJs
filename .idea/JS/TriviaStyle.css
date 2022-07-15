@@ -1,0 +1,86 @@
+#divi {
+    background: lightgray;
+    width: 1000px;
+    height: 600px;
+    background-image: linear-gradient(to left,darkorchid,whitesmoke,darkorchid);
+}
+div{
+    margin-left: auto;
+    margin-right: auto;
+}
+li{
+    font-family: Candara;
+    font-size: large;
+}
+#divPregunta{
+    background: #aa3be1de;
+    width: 900px;
+    height: 200px;
+
+}
+#divOpciones{
+    background: white;
+    width: 900px;
+    height: 400px;
+}
+#h2Pregunta{
+    font-size: xx-large;
+    margin: 0.5 auto;
+    color: yellow;
+    text-shadow: 2px 2px 2px black;
+    text-align:center;
+
+}
+#inputRespuesta{
+    width: 10%;
+    height: 20px;
+    margin: 0.1rem;
+    margin-left: 335px;
+
+}
+p{
+    font-family: Candara;
+    font-size: large;
+    text-align: center;
+}
+
+.boton1{
+    text-shadow: 1px 1px 1px white;
+    background-image: linear-gradient(to left,yellow,blueviolet,yellow);
+    border: 3px solid rgb(100,100,100,0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    width: 300px;
+    font-family: 'Poppins',sans-serif;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: black;
+    background-size: 300%;
+    transition: 0.8s;
+
+
+}
+.boton1:hover{
+    background-position: right;
+}
+
+#divBoton{
+    width: 50%;
+    margin: 0 auto;
+    align-content: center;
+    justify-content: center;
+}
+
+#divnombre{
+    background: #aa3be1de;
+    width: 900px;
+    height: 50px;
+}
+#pPlayer{
+    color: white;
+    font-size: large;
+    margin: 0.5 auto;
+    text-shadow: 2px 2px 2px black;
+    text-align:center;
+}
