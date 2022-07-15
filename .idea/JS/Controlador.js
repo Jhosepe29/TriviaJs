@@ -465,7 +465,8 @@ function cargarComponentes(){
     divOpciones.append(divBotones);
 
 
-     /*agregamos boton al div opciones*/
+     /*agregamos boton al div opciones
+     * */
     divNombrejugador.appendChild(h2Nombreplayer);
 
 
