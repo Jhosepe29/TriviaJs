@@ -1,76 +1,106 @@
-import {Trivia} from './Trivia.js'
+/**
+ * @exports
+ */
+
 import {Pregunta} from './Pregunta.js'
 import {OpcionRespuesta} from './OpcionRespuesta.js'
 import {Player} from './player.js'
 
 //import {LocalStorageManager} from './LocalStorageManager'
 
-/*Crear div que contendra la pregunta y el nombre del jugador*/
+/**@summary
+ * Trivia play es un divertido juego de pregunta dividido por categorías de conocimiento
+ * que te retaran a medida que avances por sus niveles ya que aumentara su dificultad.
+ * Por su propiedad y categoría y preguntas aleatorias ninguna ronda es igual a otra.
+ * Anímate a jugar y aprender.
+ * Este es un software desarrollado bajo las tres c.
+ * Compromiso.
+ * Calidez.
+ * Cansancio.
+ *
+ * @global
+ * Se definen los componentes HTML y se guardan en variables para su posterior uso.
+ *@function empleando document.createElement
+ * ***/
+/*Se optiene el vinculo con el HTML*/
 let divContenedor= document.querySelector("#divi");
-/*Se crea el div y el h2 que contendran la pregunta*/
+/*Se crea el div que contendran la pregunta*/
 let divPregunta = document.createElement("div");
-/*Se crea el div y el h2 que contendran las opciones de respuesta a la pregunta*/
+/*Se crea el div que contendran las opciones de respuesta a la pregunta*/
 let divOpciones = document.createElement("div");
 /*Se crea el div que contendra los botones*/
 let divBotones = document.createElement("div");
-/*h2 que contendra la pregunta*/
-let h2Pregunta = document.createElement("p");
-/*Creamos el contenedor de la lista*/
-let h2Nombreplayer = document.createElement("p");
-/*Creamos el contenedor de la lista*/
-
+/*p que contendra la pregunta*/
+let pPregunta = document.createElement("p");
+/*Creamos el p para el nombre y los puntos del jugador*/
+let pNombreyPuntos = document.createElement("p");
 /*div nombre del jugador*/
 let divNombrejugador = document.createElement("div");
-
-/*Crea mos la lista de opciones */
+/*Creamos la lista de opciones con botones */
 let opcionA = document.createElement("button");
 let opcionB = document.createElement("button");
 let opcionC = document.createElement("button");
 let opcionD = document.createElement("button");
 /*Creamos el mensaje del imput*/
-let textImpu = document.createElement("p");
-/*Creamos el imput donde el usuario ingresara su respuesta*/
-let entradaRespuesta = document.createElement("input");
+let textoMensajeOpciones = document.createElement("p");
 /*Creamos boton de enviar respuesta*/
 const botonResponder = document.createElement("button");
 
-let gamerTop;
-let nombrejugador;
+
+/**
+ * @enum
+ * @global
+ * Se definen Variables tales como un contador que llevara el numero
+ * de jugadores que han jugado el juego, nivel que guardara la ronda
+ * y se usara como parámetro en una función y otra que se usaran en
+ * toda la aplicación con nombreJugador, textoPregunta y listadeOpciones.
+ * */
 /*variables del metodo*/
-let preguntaText;
-let listOpciones;
+let nombrejugador;
+let textodelaPregunta;
+let listadeOpciones;
 let respuestaCorrecta;
 let question;
 let niveldeJuego = 1;
 let contador = 1;
 let puntosJugador = 0;
 /*LocalStorage*/
+/**
+  * @function
+ * * Es la función tipo flecha auto llamada que llama el método ini para que se
+ * ejecuto de primero en la aplicación.
+ */
 (()=>{
 
 init();
 
 })();
-
+/**
+  * @function
+ * Es la función que llama e inicializa la aplicación hace el llamado en el orden
+ * de ejecución cargando primero las preguntas la localstorage luego los componentes
+ * luego pidiendo el usuario final mente pintando la pregunta correspondientes.
+ */
 function init(){
     cargarComponentes();
     cargarlocalStorage();
 
     if(localStorage.getItem('numerodeJugadores')>1 && niveldeJuego !=1){
-        h2Nombreplayer.textContent=("Nombre : "+localStorage.getItem("jugador"+contador)+" puntos :"+
+        pNombreyPuntos.textContent=("Nombre : "+localStorage.getItem("jugador"+contador)+" puntos :"+
             localStorage.getItem("puntosJugador"+contador));
     }else{
         crearJuagdor();
     }
 
     cargarPregunta(niveldeJuego);
-    h2Nombreplayer.textContent="Nombre : "+nombrejugador+ " Puntos :"+localStorage.getItem("puntosJugador"+contador);
-}
-
-
-
-
-
-
+    pNombreyPuntos.textContent="Nombre : "+nombrejugador+ " Puntos :"+localStorage.getItem("puntosJugador"+contador);
+} /**
+ * Preguntas es un JSON que contiene veinticinco preguntas divididas en cinco categorías
+ * ciencia, historia, futbol, geografía y arte
+ * @enum {JSON} preguntas
+ * @function
+ * sera cargada en la funcion cargarlocalStorage al localstorage del navegador.
+ */
 function cargarlocalStorage() {
 
     let jsonPreguntas = {
@@ -303,15 +333,26 @@ function cargarlocalStorage() {
     localStorage.setItem("jsonPregunta", JSON.stringify(jsonPreguntas));
 
 }
-
+/**
+ *
+ * @function
+ * Crea el jugador inicial pidiendo a través de la función prompt el nombre del jugador
+ * e iniciando sus puntos en cero. También carga los datos a localstorage del navegador. .
+ */
 function crearJuagdor(){
     nombrejugador= prompt('ingrese su nombre');
-    h2Nombreplayer.textContent="Nombre : "+nombrejugador +" puntos :"+puntosJugador;
+    pNombreyPuntos.textContent="Nombre : "+nombrejugador +" puntos :"+puntosJugador;
     localStorage.setItem("jugador"+contador,nombrejugador);
     localStorage.setItem("puntosJugador"+contador,0);
     localStorage.setItem("numerodeJugadores",contador);
 }
-
+ /**
+ * @param {int} nivel Es el parámetro que representa el nivel actual del juego.
+ * @functionLa función cargarPregunta toma el nivel que le pasa como parámetro
+ * para saber la dificulta de la pregunta y genere un numero aleatorio con
+ * la función Random para escoger la categoría.
+ * sera cargada en la funcion cargarlocalStorage al localstorage del navegador.
+ * */
 function cargarPregunta(nivel){
     let nivelJuego = nivel-1;
     let jsonToString = window.localStorage.getItem("jsonPregunta");
@@ -333,77 +374,85 @@ function cargarPregunta(nivel){
 
 
     switch (categoriaAleatoria){
-        case 1: preguntaText = jsonPreguntas['preguntas'][0]['ciencias'][nivelJuego]['pregunta'];
+        case 1: textodelaPregunta = jsonPreguntas['preguntas'][0]['ciencias'][nivelJuego]['pregunta'];
                 opcionATemporal =jsonPreguntas['preguntas'][0]['ciencias'][nivelJuego]['opcionA'];
                 opcionBTemporal = jsonPreguntas['preguntas'][0]['ciencias'][nivelJuego]['opcionB'];
                 opcionCTemporal = jsonPreguntas['preguntas'][0]['ciencias'][nivelJuego]['opcionC'];
                 opcionDTemporal = jsonPreguntas['preguntas'][0]['ciencias'][nivelJuego]['opcionD'];
                 respuestaCorrecta =  jsonPreguntas['preguntas'][0]['ciencias'][nivelJuego]['correcta'];
-                listOpciones = [opcionATemporal,opcionBTemporal,opcionCTemporal,opcionDTemporal];
-                question = new Pregunta(preguntaText,listOpciones);
-                console.log(preguntaText);
-                console.log(listOpciones);
-                pintarPregunta(question,preguntaText);
+                listadeOpciones = [opcionATemporal,opcionBTemporal,opcionCTemporal,opcionDTemporal];
+                question = new Pregunta(textodelaPregunta,listadeOpciones);
+                console.log(textodelaPregunta);
+                console.log(listadeOpciones);
+                pintarPregunta(question,textodelaPregunta);
                 break;
-        case 2: preguntaText = jsonPreguntas['preguntas'][1]['historia'][nivelJuego]['pregunta'];
+        case 2: textodelaPregunta = jsonPreguntas['preguntas'][1]['historia'][nivelJuego]['pregunta'];
                 opcionATemporal =jsonPreguntas['preguntas'][1]['historia'][nivelJuego]['opcionA'];
                 opcionBTemporal = jsonPreguntas['preguntas'][1]['historia'][nivelJuego]['opcionB'];
                 opcionCTemporal = jsonPreguntas['preguntas'][1]['historia'][nivelJuego]['opcionC'];
                 opcionDTemporal = jsonPreguntas['preguntas'][1]['historia'][nivelJuego]['opcionD'];
                 respuestaCorrecta =  jsonPreguntas['preguntas'][1]['historia'][nivelJuego]['correcta'];
-                listOpciones = [opcionATemporal,opcionBTemporal,opcionCTemporal,opcionDTemporal];
-                question = new Pregunta(preguntaText,listOpciones);
-                 console.log(preguntaText);
-                 console.log(listOpciones);
-                pintarPregunta(question,preguntaText);
+                listadeOpciones = [opcionATemporal,opcionBTemporal,opcionCTemporal,opcionDTemporal];
+                question = new Pregunta(textodelaPregunta,listadeOpciones);
+                 console.log(textodelaPregunta);
+                 console.log(listadeOpciones);
+                pintarPregunta(question,textodelaPregunta);
 
             break;
-        case 3: preguntaText = jsonPreguntas['preguntas'][2]['futbol'][nivelJuego]['pregunta'];
+        case 3: textodelaPregunta = jsonPreguntas['preguntas'][2]['futbol'][nivelJuego]['pregunta'];
                 opcionATemporal =jsonPreguntas['preguntas'][2]['futbol'][nivelJuego]['opcionA'];
                 opcionBTemporal = jsonPreguntas['preguntas'][2]['futbol'][nivelJuego]['opcionB'];
                 opcionCTemporal = jsonPreguntas['preguntas'][2]['futbol'][nivelJuego]['opcionC'];
                 opcionDTemporal = jsonPreguntas['preguntas'][2]['futbol'][nivelJuego]['opcionD'];
                 respuestaCorrecta =  jsonPreguntas['preguntas'][2]['futbol'][nivelJuego]['correcta'];
-                 listOpciones = [opcionATemporal,opcionBTemporal,opcionCTemporal,opcionDTemporal];
-                question = new Pregunta(preguntaText,listOpciones);
+                 listadeOpciones = [opcionATemporal,opcionBTemporal,opcionCTemporal,opcionDTemporal];
+                question = new Pregunta(textodelaPregunta,listadeOpciones);
 
-                 console.log(preguntaText);
-                console.log(listOpciones);
-                pintarPregunta(question,preguntaText);
+                 console.log(textodelaPregunta);
+                console.log(listadeOpciones);
+                pintarPregunta(question,textodelaPregunta);
             break;
-        case 4: preguntaText = jsonPreguntas['preguntas'][3]['geografia'][nivelJuego]['pregunta'];
+        case 4: textodelaPregunta = jsonPreguntas['preguntas'][3]['geografia'][nivelJuego]['pregunta'];
                 opcionATemporal =jsonPreguntas['preguntas'][3]['geografia'][nivelJuego]['opcionA'];
                 opcionBTemporal = jsonPreguntas['preguntas'][3]['geografia'][nivelJuego]['opcionB'];
                 opcionCTemporal = jsonPreguntas['preguntas'][3]['geografia'][nivelJuego]['opcionC'];
                 opcionDTemporal = jsonPreguntas['preguntas'][3]['geografia'][nivelJuego]['opcionD'];
                 respuestaCorrecta =  jsonPreguntas['preguntas'][3]['geografia'][nivelJuego]['correcta'];
-                 listOpciones = [opcionATemporal,opcionBTemporal,opcionCTemporal,opcionDTemporal];
-                question = new Pregunta(preguntaText,listOpciones);
-                console.log(preguntaText);
-            console.log(listOpciones);
-                pintarPregunta(question,preguntaText);
+                 listadeOpciones = [opcionATemporal,opcionBTemporal,opcionCTemporal,opcionDTemporal];
+                question = new Pregunta(textodelaPregunta,listadeOpciones);
+                console.log(textodelaPregunta);
+            console.log(listadeOpciones);
+                pintarPregunta(question,textodelaPregunta);
             break;
-        case 5: preguntaText = jsonPreguntas['preguntas'][4]['arte'][nivelJuego]['pregunta'];
+        case 5: textodelaPregunta = jsonPreguntas['preguntas'][4]['arte'][nivelJuego]['pregunta'];
                 opcionATemporal =jsonPreguntas['preguntas'][4]['arte'][nivelJuego]['opcionA'];
                 opcionBTemporal = jsonPreguntas['preguntas'][4]['arte'][nivelJuego]['opcionB'];
                 opcionCTemporal = jsonPreguntas['preguntas'][4]['arte'][nivelJuego]['opcionC'];
                 opcionDTemporal = jsonPreguntas['preguntas'][4]['arte'][nivelJuego]['opcionD'];
                 respuestaCorrecta =  jsonPreguntas['preguntas'][4]['arte'][nivelJuego]['correcta'];
-                listOpciones = [opcionATemporal,opcionBTemporal,opcionCTemporal,opcionDTemporal];
-                question = new Pregunta(preguntaText,listOpciones);
-                console.log(preguntaText);
-            console.log(listOpciones);
-                pintarPregunta(question,preguntaText);
+                listadeOpciones = [opcionATemporal,opcionBTemporal,opcionCTemporal,opcionDTemporal];
+                question = new Pregunta(textodelaPregunta,listadeOpciones);
+                console.log(textodelaPregunta);
+            console.log(listadeOpciones);
+                pintarPregunta(question,textodelaPregunta);
             break;
         default: console.log("Algo salio mal");
         break;
     }
 }
-
+ /**
+ * @param {Object} question Objeto de tipo pregunta que es generado en el metodo
+ *  cargarPregunta.
+ * @param {String} preguntaText+
+ * @functionLa función cargarPregunta toma el nivel que le pasa como parámetro
+ * para saber la dificulta de la pregunta y genere un numero aleatorio con
+ * la función Random para escoger la categoría.
+ * sera cargada en la funcion cargarlocalStorage al localstorage del navegador.
+ * */
 function pintarPregunta(question,preguntaText){
     console.log(question._textoPregunta);
-    h2Pregunta.textContent=preguntaText;
-    //h2Pregunta.append(question._textoPregunta);
+    pPregunta.textContent=preguntaText;
+
 
     /*llenamos las opciones*/
 
@@ -417,7 +466,12 @@ function pintarPregunta(question,preguntaText){
 
 
 }
-
+/**
+ *
+ * @function
+ * Es la función que toma el div inicial del HTML, agrega atributos como id, class
+ * a los diferentes componentes del aplicativo tales como div, botones, p..
+ */
 function cargarComponentes(){
 
     divPregunta.id = "divPregunta";
@@ -425,7 +479,11 @@ function cargarComponentes(){
     divNombrejugador.id = "divnombre";
 
 
-
+/**
+ * se agrega el evento click a los botones,Se agregan las funciones que responderán
+ * al evento para validar la respuesta escogida por el usuario.
+ * @event
+ * */
     opcionA.id="botonopcion";
     opcionA.className = "boton1";
     opcionA.addEventListener("click",escorecataA);
@@ -444,8 +502,8 @@ function cargarComponentes(){
 
 
 
-    h2Pregunta.id = "h2Pregunta";
-    h2Nombreplayer.id = "pPlayer"
+    pPregunta.id = "pPregunta";
+    pNombreyPuntos.id = "pPlayer"
 
     divOpciones.id="divOpciones"
     divOpciones.className = "Contenedor";
@@ -453,7 +511,7 @@ function cargarComponentes(){
     divBotones.id="divBoton"
 
 
-    textImpu.textContent="seleccione la respuesta respuestaCorrecta"
+    textoMensajeOpciones.textContent="seleccione la respuesta respuestaCorrecta"
     divBotones.append(opcionA);
     divBotones.append(opcionB);
     divBotones.append(opcionC);
@@ -461,26 +519,39 @@ function cargarComponentes(){
 
 
     /*Agregamos el mesaje imput al div opciones*/
-    divOpciones.appendChild(textImpu);
+    divOpciones.appendChild(textoMensajeOpciones);
     divOpciones.append(divBotones);
 
 
      /*agregamos boton al div opciones
      * */
-    divNombrejugador.appendChild(h2Nombreplayer);
+    divNombrejugador.appendChild(pNombreyPuntos);
 
 
     divPregunta.appendChild(divNombrejugador);
-    divPregunta.appendChild(h2Pregunta);
+    divPregunta.appendChild(pPregunta);
     divContenedor.appendChild(divPregunta);
     divContenedor.appendChild(divOpciones);
 
 }
-
+/**
+ * Create a point.
+ * @param {number} topeSuperio - es el rango superor que no ira incluido en generazion de numeros aletorios.
+ * @param {number} topeIngerior - un numero que reprersenta el valor minimo del rango a generar (si va incluido).
+ */
 function generaraleatorio(topeSuperio,topeIngerior){
     return Math.floor(Math.random()*(topeSuperio-topeIngerior))+ topeIngerior;
 }
 
+/**
+  * @function
+ * @description
+ * Es la función que responderá si el usuario da clic en el botón A y validara
+ * si la opción A es la respuesta correcta a la pregunta actual del sistema.
+ * Haciendo el proceso de sumar los puntos en caso de acertar o de guardar los
+ * datos y terminar el juego en caso de fallar
+ *  todo esto con sus respectivas alertas.
+ */
 function escorecataA(){
     if('A' === respuestaCorrecta){
         alert("felicidade");
@@ -503,7 +574,7 @@ function escorecataA(){
         niveldeJuego++;
 
         localStorage.setItem("puntosJugador"+contador,puntosActuales);
-        h2Nombreplayer.textContent="Nombre : "+nombrejugador+ " Puntos"+ puntosActuales;
+        pNombreyPuntos.textContent="Nombre : "+nombrejugador+ " Puntos: "+ puntosActuales;
 
         if(niveldeJuego<=5){
             cargarPregunta(niveldeJuego);
@@ -524,6 +595,15 @@ function escorecataA(){
     niveldeJuego=1;
     init();
 }
+/**
+ * @function
+ * @description
+ * Es la función que responderá si el usuario da clic en el botón B y validara
+ * si la opción B es la respuesta correcta a la pregunta actual del sistema.
+ * Haciendo el proceso de sumar los puntos en caso de acertar o de guardar los
+ * datos y terminar el juego en caso de fallar
+ *  todo esto con sus respectivas alertas.
+ */
 function escorecataB(){
     if('B' === respuestaCorrecta){
         alert("felicidade");
@@ -546,7 +626,7 @@ function escorecataB(){
         niveldeJuego++;
 
         localStorage.setItem("puntosJugador"+contador,puntosActuales);
-        h2Nombreplayer.textContent="Nombre : "+nombrejugador+ " Puntos"+ puntosActuales;
+        pNombreyPuntos.textContent="Nombre : "+nombrejugador+ " Puntos: "+ puntosActuales;
         if(niveldeJuego<=5){
             cargarPregunta(niveldeJuego);
             console.log("esta entrando al if")
@@ -566,6 +646,15 @@ function escorecataB(){
     niveldeJuego=1;
     init();
 }
+/**
+ * @function
+ * @description
+ * Es la función que responderá si el usuario da clic en el botón C y validara
+ * si la opción C es la respuesta correcta a la pregunta actual del sistema.
+ * Haciendo el proceso de sumar los puntos en caso de acertar o de guardar los
+ * datos y terminar el juego en caso de fallar
+ *  todo esto con sus respectivas alertas.
+ */
 function escorecataC(){
     if('C' === respuestaCorrecta){
         alert("felicidade");
@@ -588,7 +677,7 @@ function escorecataC(){
         niveldeJuego++;
 
         localStorage.setItem("puntosJugador"+contador,puntosActuales);
-        h2Nombreplayer.textContent="Nombre : "+nombrejugador+ " Puntos"+ puntosActuales;
+        pNombreyPuntos.textContent="Nombre : "+nombrejugador+ " Puntos: "+ puntosActuales;
         if(niveldeJuego<=5){
             cargarPregunta(niveldeJuego);
             console.log("esta entrando al if")
@@ -609,6 +698,15 @@ function escorecataC(){
     init();
 
 }
+/**
+ * @function
+ * @description
+ * Es la función que responderá si el usuario da clic en el botón D y validara
+ * si la opción D es la respuesta correcta a la pregunta actual del sistema.
+ * Haciendo el proceso de sumar los puntos en caso de acertar o de guardar los
+ * datos y terminar el juego en caso de fallar
+ *  todo esto con sus respectivas alertas.
+ */
 function escorecataD(){
     if('D' === respuestaCorrecta){
         alert("felicidade");
@@ -631,7 +729,7 @@ function escorecataD(){
         niveldeJuego++;
 
         localStorage.setItem("puntosJugador"+contador,puntosActuales);
-        h2Nombreplayer.textContent="Nombre : "+nombrejugador+ " Puntos"+ puntosActuales;
+        pNombreyPuntos.textContent="Nombre : "+nombrejugador+ " Puntos: "+ puntosActuales;
         if(niveldeJuego<=5){
             cargarPregunta(niveldeJuego);
             console.log("esta entrando al if");
